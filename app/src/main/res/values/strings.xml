@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">VRComande2</string>
+    <string name="copy">Copyright © 2015 Roberto Mari SAS</string>
+
+    // main
+    <string name="main_button_login">Login</string>
+    <string name="main_button_conf">Configurazioni</string>
+    <string name="main_button_sinc">Sincronizza</string>
+
+    // main_menu
+    <string name="main_menu_info">Informazioni</string>
+    <string name="main_menu_chiudi">Chiudi</string>
+    <string name="main_menu_guida">Guida</string>
+    <string name="title_activity_login">Login</string>
+
+    //Login
+    <string name="login_title">Login</string>
+    <string name="login_subTitle">Autenticati per poter prendere comande</string>
+    <string name="login_hint_user">Nome Utente</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_b_accedi">Accedi</string>
+    <string name="login_err_msg_user">Inserisci il tuo nome utente</string>
+    <string name="login_err_msg_pass">Inserisci la password</string>
+
+</resources>

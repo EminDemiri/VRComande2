@@ -15,6 +15,5 @@
         <item name="android:textSize">@dimen/text_button</item>
         <item name="android:maxWidth">320dp</item>
         <item name="android:minHeight">50dp</item>
-        <item name="android:layout_margin">0dp</item>
     </style>
 </resources>

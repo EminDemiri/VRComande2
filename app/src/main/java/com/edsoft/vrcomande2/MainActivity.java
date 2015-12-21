@@ -25,14 +25,17 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_send:
-                //perform send
-                Toast.makeText(this, "Hai premuto send" , Toast.LENGTH_LONG).show();
+            case R.id.action_main_chiudi:
+                //Questo pulsante del menu chiude l'applicazione
+                System.exit(0);
                 return true;
             case R.id.action_main_info:
                 //perform settings
-                Toast.makeText(this, "Hai premuto info" , Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Le informazioni saranno disponibilli a breve" , Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.action_main_guida:
+                //Pulsante per visualizzare una guida sulla schermata visualizzata
+                Toast.makeText(this,"La guida non è ancora disponibile", Toast.LENGTH_SHORT).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -53,4 +56,9 @@ public class MainActivity extends AppCompatActivity {
         Intent Intent2= new Intent(this,ConfigurazioniActivity.class);
         startActivity(Intent2);
     }
+
+    public void click_main_sincronizza (View view) {
+        Toast.makeText(this,"Il codice per la sincronizzazione deve essere ancora scritto", Toast.LENGTH_LONG).show();
+    }
+
 }

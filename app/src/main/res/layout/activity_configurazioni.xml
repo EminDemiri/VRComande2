@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinatorlayoutConfigurazioni"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:gravity="center_vertical|center_horizontal"
-    android:background="@color/colorBackgroundLogin">
+    android:background="@color/white">
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_alignParentTop="true"
+        android:elevation="10dp"
+        app:cardBackgroundColor="@color/indingo_100">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="25dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_alignParentTop="false"
         android:gravity="center_horizontal">
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_name"
+            android:id="@+id/input_conf_layout_ip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/indingo_900">
@@ -30,11 +46,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="@string/login_hint_user" />
+                android:hint="@string/configurazioni_ip" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_password"
+            android:id="@+id/input_conf_layout_tcp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/indingo_900">
@@ -44,17 +60,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="@string/login_hint_password" />
+                android:hint="@string/configurazioni_porta" />
         </android.support.design.widget.TextInputLayout>
 
-        <Button android:id="@+id/btn_signup"
+        <CheckBox
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_b_accedi"
+            android:text="@string/configurazioni_ceckbox"
+            android:id="@+id/checkBox"
+            android:layout_marginTop="10dp"
+            android:shadowColor="@color/indingo_900"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dp"
+            android:textAlignment="center" />
+
+        <Button
+            style="@style/Button"
+            android:id="@+id/btn_conf_registra"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/configurazioni_registra"
+            android:background="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:onClick="click_conf_registra" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical">
+
+        <Button
+            style="@style/Button"
+            android:id="@+id/btn_conf_salva"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:text="@string/configurazioni_salva"
             android:background="@color/colorPrimary"
-            android:layout_marginTop="40dp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:onClick="click_conf_salva" />
+
+        <Button
+            style="@style/Button"
+            android:id="@+id/btn_conf_chiudi"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:text="@string/configurazioni_chiudi"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:onClick="click_conf_chiudi" />
 
     </LinearLayout>
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </android.support.design.widget.CoordinatorLayout>

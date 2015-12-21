@@ -30,7 +30,7 @@
     <string name="configurazioni_registra">Registra Terminale</string>
     <string name="configurazioni_salva">Salva</string>
     <string name="configurazioni_chiudi">Chiudi</string>
-    <string name="configurazioni_err_ip">Inserisci l'IP del Server</string>
+    <string name="configurazioni_err_ip">Inserisci l\'IP del Server</string>
     <string name="configurazioni_err_porta">Inserisci la porta TCP</string>
     <string name="configurazioni_msg_salva">I dati sono stati correttamente salvati!</string>
     <string name="configurazioni_msg_registra">Il terminale è stato registrato!</string>

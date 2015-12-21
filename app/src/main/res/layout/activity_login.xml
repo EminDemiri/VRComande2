@@ -38,7 +38,8 @@
             android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/indingo_900">
+            android:textColorHint="@color/indingo_900"
+            android:layout_marginBottom="40dp">
 
             <EditText
                 android:id="@+id/input_password"
@@ -48,12 +49,13 @@
                 android:hint="@string/login_hint_password" />
         </android.support.design.widget.TextInputLayout>
 
-        <Button android:id="@+id/btn_signup"
+        <Button
+            style="@style/Button"
+            android:id="@+id/btn_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/login_b_accedi"
             android:background="@color/colorPrimary"
-            android:layout_marginTop="40dp"
             android:textColor="@android:color/white"/>
 
     </LinearLayout>

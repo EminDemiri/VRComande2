@@ -7,14 +7,14 @@
     <item android:id="@+id/action_main_info"
         android:title="@string/main_menu_info"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 
     <item android:id="@+id/action_main_guida"
         android:title="@string/main_menu_guida"
         android:orderInCategory="99"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/action_send"
+    <item android:id="@+id/action_main_chiudi"
         android:title="Chiudi"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_close_circle"/>

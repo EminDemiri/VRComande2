@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 //perform send
                 Toast.makeText(this, "Hai premuto send" , Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.action_info:
+            case R.id.action_main_info:
                 //perform settings
                 Toast.makeText(this, "Hai premuto info" , Toast.LENGTH_LONG).show();
                 return true;
@@ -46,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void click_login (View view){
         Intent intent1= new Intent(this,LoginActivity.class);
-        startActivity(intent1 );
+        startActivity(intent1);
+    }
+
+    public void click_configurazioni (View view) {
+        Intent Intent2= new Intent(this,ConfigurazioniActivity.class);
+        startActivity(Intent2);
     }
 }

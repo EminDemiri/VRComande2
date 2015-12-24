@@ -1,6 +1,8 @@
 package com.edsoft.vrcomande2;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
@@ -19,23 +22,22 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputName, inputPassword;
     private TextInputLayout inputLayoutName, inputLayoutPassword;
     private Button btnSignUp;
+    private CoordinatorLayout coordinatorLayout;
+    private String stringa="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ActionBar actionBar=getSupportActionBar();
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.login);
-        actionBar.setTitle(R.string.login_title);
-        actionBar.setSubtitle(R.string.login_subTitle);
+        set_ActionBar();
 
         inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
         inputName = (EditText) findViewById(R.id.input_name);
         inputPassword = (EditText) findViewById(R.id.input_password);
         btnSignUp = (Button) findViewById(R.id.btn_signup);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorlayoutLogin);
 
         inputName.addTextChangedListener(new MyTextWatcher(inputName));
         inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
@@ -59,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         if (!validatePassword()) {
             return;
         }
-
-        Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
+        stringa ="Pulsante login premuto";
+        get_snackbar();
     }
 
     private boolean validateName() {
@@ -101,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     private class MyTextWatcher implements TextWatcher {
 
         private View view;
+        private int cont;
 
         private MyTextWatcher(View view) {
             this.view = view;
@@ -110,6 +113,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            if (cont==0) {
+                stringa = "Riscordati di salvare prima di chiudere la schermata!!";
+                get_snackbar();
+            }
+            cont=1;
         }
 
         public void afterTextChanged(Editable editable) {
@@ -122,5 +130,26 @@ public class LoginActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    //Setup ActionBar
+    private void set_ActionBar() {
+        ActionBar actionBar=getSupportActionBar();
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.login);
+        actionBar.setTitle(R.string.login_title);
+        actionBar.setSubtitle(R.string.login_subTitle);
+    }
+
+    public void get_snackbar(){
+
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, stringa, Snackbar.LENGTH_LONG);
+
+        // Cambia il colore del testo o del pulsante
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.yellow_500));
+
+        snackbar.show();
     }
 }

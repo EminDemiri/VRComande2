@@ -1,32 +1,21 @@
 package com.edsoft.vrcomande2;
 
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+
+import com.rey.material.widget.Button;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText inputName, inputPassword;
-    private TextInputLayout inputLayoutName, inputLayoutPassword;
-    private Button btnSignUp;
-    private CoordinatorLayout coordinatorLayout;
-    private String stringa="";
-    Animation animationFadeIn;
+    private Button button_login;
+    private EditText inputUser, inputPassword;
+    private TextInputLayout inputLayoutUser, inputLayoutPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,111 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         set_ActionBar();
-
-        animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-
-        inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
-        inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
-        inputName = (EditText) findViewById(R.id.input_name);
-        inputPassword = (EditText) findViewById(R.id.input_password);
-        btnSignUp = (Button) findViewById(R.id.btn_signup);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorlayoutLogin);
-
-        inputName.addTextChangedListener(new MyTextWatcher(inputName));
-        inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                submitForm();
-            }
-        });
-
-        inputLayoutName.startAnimation(animationFadeIn);
-        inputLayoutPassword.startAnimation(animationFadeIn);
-        btnSignUp.startAnimation(animationFadeIn);
-
-    }
-
-    private void submitForm()       //Validate FORM
-    {
-        if (!validateName()) {
-            return;
-        }
-
-        if (!validatePassword()) {
-            return;
-        }
-        stringa ="Pulsante login premuto";
-        crea_snackbar();
-    }
-
-    private boolean validateName()      //Controlla che il campo nome non sia vuoto
-    {
-        if (inputName.getText().toString().trim().isEmpty()) {
-            inputLayoutName.setError(getString(R.string.login_err_msg_user));
-            requestFocus(inputName);
-            return false;
-        } else {
-            inputLayoutName.setErrorEnabled(false);
-        }
-        return true;
-    }
-
-
-    private boolean validatePassword() {
-        if (inputPassword.getText().toString().trim().isEmpty()) {
-            inputLayoutPassword.setError(getString(R.string.login_err_msg_pass));
-            requestFocus(inputPassword);
-            return false;
-        } else {
-            inputLayoutPassword.setErrorEnabled(false);
-        }
-
-        return true;
-    }
-
-    private static boolean isValidEmail(String email) {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
-
-    private class MyTextWatcher implements TextWatcher //Metodi controllo cambiamento testi
-    {
-
-        private View view;
-        private int cont;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if (cont==0) {
-                stringa = "Riscordati di salvare prima di chiudere la schermata!!";
-                crea_snackbar();
-            }
-            cont=1;
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.input_name:
-                    validateName();
-                    break;
-                case R.id.input_password:
-                    validatePassword();
-                    break;
-            }
-        }
+        set_Component();
     }
 
     private void set_ActionBar()        //Setup ActionBar
@@ -150,18 +35,56 @@ public class LoginActivity extends AppCompatActivity {
         actionBar.setSubtitle(R.string.login_subTitle);
     }
 
-    public void crea_snackbar()         //crea e manda a video una snackBar con gravity TOP
+    private void set_Component()        //Setup ID componenti
     {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, stringa, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(getResources().getColor(R.color.yellow_500));
+        inputUser= (EditText) findViewById(R.id.input_user);
+        inputLayoutUser = (TextInputLayout) findViewById(R.id.input_layout_user);
+        inputPassword = (EditText) findViewById(R.id.input_password);
+        inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
+        button_login = (Button) findViewById(R.id.btn_signup);
+    }
 
-        FrameLayout.LayoutParams sbParams = (FrameLayout.LayoutParams) sbView.getLayoutParams();
-        sbParams.gravity = Gravity.TOP;
-        sbView.setLayoutParams(sbParams);
+    private class MyTextWatcher implements TextWatcher {
 
-        snackbar.show();
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        public void afterTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            switch (view.getId()) {
+                case R.id.input_user:
+                    break;
+                case R.id.input_password:
+                    break;
+            }
+        }
+    }
+
+    private boolean validateText(EditText input, TextInputLayout inputLayout, String messaggio) {
+        if (input.getText().toString().trim().isEmpty()) {
+            inputLayout.setError(messaggio);
+            requestFocus(input);
+            return false;
+        } else {
+            inputLayoutName.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
     }
 }

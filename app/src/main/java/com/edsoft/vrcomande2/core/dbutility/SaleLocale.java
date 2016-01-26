@@ -1,9 +1,11 @@
 package com.edsoft.vrcomande2.core.dbutility;
 
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import com.edsoft.vrcomande2.core.networkutility.SaleXML;
 
@@ -12,95 +14,76 @@ import java.util.ArrayList;
 /**
  * Created by Emin Demiri on 22/12/2015.
  */
-public class SaleLocale {
 
+public class SaleLocale {
     public static final String ALFASALA = "alfasala";
     public static final String CODICE = "codice";
-    public static final String[] COLONNE = { "codice", "alfasala", "numerotavoli", "deltatavoli" };
+    public static final String[] COLONNE;
     public static final String DELTATAVOLI = "deltatavoli";
     public static final String NUMEROTAVOLI = "numerotavoli";
     public static final String TABELLA = "sale";
 
-    public static boolean aggiorna(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, int paramInt1, int paramInt2)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfasala", paramString2);
-        localContentValues.put("numerotavoli", Integer.valueOf(paramInt1));
-        localContentValues.put("deltatavoli", Integer.valueOf(paramInt2));
-        return paramSQLiteDatabase.update("sale", localContentValues, "codice=" + paramString1, null) > 0;
+    static {
+        COLONNE = new String[]{CODICE, ALFASALA, NUMEROTAVOLI, DELTATAVOLI};
     }
 
-    public static void bulkInsertSale(SQLiteDatabase paramSQLiteDatabase, ArrayList<SaleXML> paramArrayList)
-    {
-        paramSQLiteDatabase.beginTransaction();
-        try
-        {
-            SQLiteStatement localSQLiteStatement = paramSQLiteDatabase.compileStatement("INSERT INTO sale (codice, alfasala, numerotavoli, deltatavoli) VALUES (?, ?, ?, ?)");
-            int i = 0;
-            while (i < paramArrayList.size())
-            {
-                localSQLiteStatement.bindString(1, ((SaleXML)paramArrayList.get(i)).getCodSala());
-                localSQLiteStatement.bindString(2, ((SaleXML)paramArrayList.get(i)).getAlfaSala());
-                localSQLiteStatement.bindString(3, Integer.toString(((SaleXML)paramArrayList.get(i)).getNumeroTavoli()));
-                localSQLiteStatement.bindString(4, Integer.toString(((SaleXML)paramArrayList.get(i)).getDeltaTavoli()));
-                localSQLiteStatement.execute();
-                localSQLiteStatement.clearBindings();
-                i += 1;
+    public static void bulkInsertSale(SQLiteDatabase db, ArrayList<SaleXML> sale) {
+        db.beginTransaction();
+        try {
+            SQLiteStatement insert = db.compileStatement("INSERT INTO sale (codice, alfasala, numerotavoli, deltatavoli) VALUES (?, ?, ?, ?)");
+            for (int i = 0; i < sale.size(); i++) {
+                insert.bindString(1, ((SaleXML) sale.get(i)).getCodSala());
+                insert.bindString(2, ((SaleXML) sale.get(i)).getAlfaSala());
+                insert.bindString(3, Integer.toString(((SaleXML) sale.get(i)).getNumeroTavoli()));
+                insert.bindString(4, Integer.toString(((SaleXML) sale.get(i)).getDeltaTavoli()));
+                insert.execute();
+                insert.clearBindings();
             }
-            paramSQLiteDatabase.setTransactionSuccessful();
-            return;
-        }
-        catch (Exception ex)
-        {
-
-        }
-        finally
-        {
-            paramSQLiteDatabase.endTransaction();
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e("bulkInsert:", e.getMessage() == null ? "bulkInsert failed" : e.getMessage());
+        } finally {
+            db.endTransaction();
         }
     }
 
-    public static boolean deleteSala(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.delete("sale", "codice=" + paramString, null) > 0;
-    }
-
-    public static Cursor getAllSale(SQLiteDatabase paramSQLiteDatabase)
-    {
-        return paramSQLiteDatabase.query("sale", COLONNE, null, null, null, null, null);
-    }
-
-    public static Cursor getSala(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.query(true, "sale", COLONNE, "codice='" + paramString + "'", null, null, null, null, null);
-    }
-
-    public static Cursor getSalaByDescr(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.query(true, "sale", COLONNE, "alfasala='" + paramString + "'", null, null, null, null, null);
-    }
-
-    private static boolean inserisci(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, int paramInt1, int paramInt2)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfasala", paramString2);
-        localContentValues.put("numerotavoli", Integer.valueOf(paramInt1));
-        localContentValues.put("deltatavoli", Integer.valueOf(paramInt2));
-        return paramSQLiteDatabase.insert("sale", null, localContentValues) > 0L;
-    }
-
-    public static void insertSala(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, int paramInt1, int paramInt2)
-    {
-        if (!aggiorna(paramSQLiteDatabase, paramString1, paramString2, paramInt1, paramInt2)) {}
-        for (int i = 1;; i = 0)
-        {
-            if (i != 0) {
-                inserisci(paramSQLiteDatabase, paramString1, paramString2, paramInt1, paramInt2);
-            }
-            return;
+    public static void insertSala(SQLiteDatabase db, String codice, String descrizione, int numtavoli, int deltatavoli) {
+        if (!aggiorna(db, codice, descrizione, numtavoli, deltatavoli)) {
+            boolean newrecord = inserisci(db, codice, descrizione, numtavoli, deltatavoli);
         }
     }
 
+    private static boolean inserisci(SQLiteDatabase db, String codice, String descrizione, int numtavoli, int deltatavoli) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFASALA, descrizione);
+        v.put(NUMEROTAVOLI, Integer.valueOf(numtavoli));
+        v.put(DELTATAVOLI, Integer.valueOf(deltatavoli));
+        return db.insert(TABELLA, null, v) > 0;
+    }
+
+    public static boolean aggiorna(SQLiteDatabase db, String codice, String descrizione, int numtavoli, int deltatavoli) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFASALA, descrizione);
+        v.put(NUMEROTAVOLI, Integer.valueOf(numtavoli));
+        v.put(DELTATAVOLI, Integer.valueOf(deltatavoli));
+        return db.update(TABELLA, v, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getAllSale(SQLiteDatabase db) {
+        return db.query(TABELLA, COLONNE, null, null, null, null, null);
+    }
+
+    public static boolean deleteSala(SQLiteDatabase db, String codice) {
+        return db.delete(TABELLA, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getSala(SQLiteDatabase db, String codice) {
+        return db.query(true, TABELLA, COLONNE, "codice='" + codice + "'", null, null, null, null, null);
+    }
+
+    public static Cursor getSalaByDescr(SQLiteDatabase db, String descr) {
+        return db.query(true, TABELLA, COLONNE, "alfasala='" + descr + "'", null, null, null, null, null);
+    }
 }

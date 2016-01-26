@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/white</item>
     </style>
 
     <style name="Button" parent="AppTheme">
@@ -15,5 +16,14 @@
         <item name="android:textSize">@dimen/text_button</item>
         <item name="android:maxWidth">320dp</item>
         <item name="android:minHeight">50dp</item>
+    </style>
+
+    <style name="Material.Drawable.CheckBox">
+        <item name="cbd_width">32dp</item>
+        <item name="cbd_height">32dp</item>
+        <item name="cbd_boxSize">20dp</item>
+        <item name="cbd_cornerRadius">2dp</item>
+        <item name="cbd_strokeSize">2dp</item>
+        <item name="cbd_animDuration">@android:integer/config_mediumAnimTime</item>
     </style>
 </resources>

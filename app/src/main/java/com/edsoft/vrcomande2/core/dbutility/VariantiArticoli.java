@@ -1,5 +1,6 @@
 package com.edsoft.vrcomande2.core.dbutility;
 
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -8,67 +9,56 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by Emin Demiri on 22/12/2015.
  */
-public class VariantiArticoli {
 
+public class VariantiArticoli {
     public static final String ALFAVARIANTE = "alfavariante";
     public static final String CODICE = "codice";
-    public static final String[] COLONNE = { "codice", "alfavariante", "prezzovariante", "variantepertutti" };
+    public static final String[] COLONNE;
     public static final String PREZZOVARIANTE = "prezzovariante";
     public static final String TABELLA = "variantiarticoli";
     public static final String VARIANTEPERTUTTI = "variantepertutti";
 
-    public static boolean aggiorna(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, double paramDouble, boolean paramBoolean)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfavariante", paramString2);
-        localContentValues.put("prezzovariante", Double.valueOf(paramDouble));
-        localContentValues.put("variantepertutti", Boolean.valueOf(paramBoolean));
-        return paramSQLiteDatabase.update("variantiarticoli", localContentValues, "codice=" + paramString1, null) > 0;
+    static {
+        COLONNE = new String[]{CODICE, ALFAVARIANTE, PREZZOVARIANTE, VARIANTEPERTUTTI};
     }
 
-    public static boolean deleteVariante(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.delete("variantiarticoli", "codice='" + paramString + "'", null) > 0;
-    }
-
-    public static Cursor getAllVarianti(SQLiteDatabase paramSQLiteDatabase)
-    {
-        return paramSQLiteDatabase.query("variantiarticoli", COLONNE, null, null, null, null, null);
-    }
-
-    public static Cursor getVariante(SQLiteDatabase paramSQLiteDatabase, String paramString)
-            throws SQLException
-    {
-        return paramSQLiteDatabase.query(true, "variantiarticoli", COLONNE, "codice='" + paramString + "'", null, null, null, null, null);
-    }
-
-    public static Cursor getVariantiPerTutti(SQLiteDatabase paramSQLiteDatabase)
-            throws SQLException
-    {
-        return paramSQLiteDatabase.query(true, "variantiarticoli", COLONNE, "variantepertutti = 1", null, null, null, null, null);
-    }
-
-    private static boolean inserisci(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, double paramDouble, boolean paramBoolean)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfavariante", paramString2);
-        localContentValues.put("prezzovariante", Double.valueOf(paramDouble));
-        localContentValues.put("variantepertutti", Boolean.valueOf(paramBoolean));
-        return paramSQLiteDatabase.insert("variantiarticoli", null, localContentValues) > 0L;
-    }
-
-    public static void insertVariante(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, double paramDouble, boolean paramBoolean)
-    {
-        if (!aggiorna(paramSQLiteDatabase, paramString1, paramString2, paramDouble, paramBoolean)) {}
-        for (int i = 1;; i = 0)
-        {
-            if (i != 0) {
-                inserisci(paramSQLiteDatabase, paramString1, paramString2, paramDouble, paramBoolean);
-            }
-            return;
+    public static void insertVariante(SQLiteDatabase db, String codice, String descrizione, double prezzo, boolean PerTutti) {
+        if (!aggiorna(db, codice, descrizione, prezzo, PerTutti)) {
+            boolean newrecord = inserisci(db, codice, descrizione, prezzo, PerTutti);
         }
     }
 
+    private static boolean inserisci(SQLiteDatabase db, String codice, String descrizione, double prezzo, boolean PerTutti) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFAVARIANTE, descrizione);
+        v.put(PREZZOVARIANTE, Double.valueOf(prezzo));
+        v.put(VARIANTEPERTUTTI, Boolean.valueOf(PerTutti));
+        return db.insert(TABELLA, null, v) > 0;
+    }
+
+    public static boolean aggiorna(SQLiteDatabase db, String codice, String descrizione, double prezzo, boolean PerTutti) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFAVARIANTE, descrizione);
+        v.put(PREZZOVARIANTE, Double.valueOf(prezzo));
+        v.put(VARIANTEPERTUTTI, Boolean.valueOf(PerTutti));
+        return db.update(TABELLA, v, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getAllVarianti(SQLiteDatabase db) {
+        return db.query(TABELLA, COLONNE, null, null, null, null, null);
+    }
+
+    public static boolean deleteVariante(SQLiteDatabase db, String codice) {
+        return db.delete(TABELLA, new StringBuilder().append("codice='").append(codice).append("'").toString(), null) > 0;
+    }
+
+    public static Cursor getVariante(SQLiteDatabase db, String codice) throws SQLException {
+        return db.query(true, TABELLA, COLONNE, "codice='" + codice + "'", null, null, null, null, null);
+    }
+
+    public static Cursor getVariantiPerTutti(SQLiteDatabase db) throws SQLException {
+        return db.query(true, TABELLA, COLONNE, "variantepertutti = 1", null, null, null, null, null);
+    }
 }

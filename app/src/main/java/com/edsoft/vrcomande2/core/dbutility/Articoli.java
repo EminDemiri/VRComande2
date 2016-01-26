@@ -1,5 +1,6 @@
 package com.edsoft.vrcomande2.core.dbutility;
 
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,74 +8,62 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by Emin Demiri on 22/12/2015.
  */
+
 public class Articoli {
-
-    public static final String TABELLA = "articoli";
-    public static final String[] COLONNE = {
-            "codice", "descrizione", "prezzo", "iva", "reparto", "posizione"
-    };
-    public static final String CODICE = "codice";
     public static final String ALFAARTICOLO = "descrizione";
-    public static final String PREZZODIVENDITA = "prezzo";
     public static final String ALIQUOTAIVA = "iva";
+    public static final String CODICE = "codice";
     public static final String CODICEREPARTO = "reparto";
+    public static final String[] COLONNE;
     public static final String POSIZIONE = "posizione";
+    public static final String PREZZODIVENDITA = "prezzo";
+    public static final String TABELLA = "articoli";
 
-    public static boolean aggiorna(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3, double paramDouble1, double paramDouble2, int paramInt)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("descrizione", paramString2);
-        localContentValues.put("prezzo", Double.valueOf(paramDouble1));
-        localContentValues.put("iva", Double.valueOf(paramDouble2));
-        localContentValues.put("reparto", paramString3);
-        localContentValues.put("posizione", Integer.valueOf(paramInt));
-        return paramSQLiteDatabase.update("articoli", localContentValues, "codice=" + paramString1, null) > 0;
+    static {
+        COLONNE = new String[]{CODICE, ALFAARTICOLO, PREZZODIVENDITA, ALIQUOTAIVA, CODICEREPARTO, POSIZIONE};
     }
 
-    public static boolean deleteArticolo(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.delete("articoli", "codice=" + paramString, null) > 0;
-    }
-
-    public static Cursor getAllArticoli(SQLiteDatabase paramSQLiteDatabase)
-    {
-        return paramSQLiteDatabase.query("articoli", COLONNE, null, null, null, null, "posizione");
-    }
-
-    public static Cursor getAllArticoli(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.query("articoli", COLONNE, "reparto='" + paramString + "'", null, null, null, "posizione");
-    }
-
-    public static Cursor getAllArticolo(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.query(true, "articoli", COLONNE, "codice='" + paramString + "'", null, null, null, null, null);
-    }
-
-    private static boolean inserisci(SQLiteDatabase paramSQLitaDatabase, String paramString1, String paramString2, String paramString3, double paramDouble1, double paramDouble2, int paramInt)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("descrizione", paramString2);
-        localContentValues.put("prezzo", Double.valueOf(paramDouble1));
-        localContentValues.put("iva", Double.valueOf(paramDouble2));
-        localContentValues.put("reparto", paramString3);
-        localContentValues.put("posizione", Integer.valueOf(paramInt));
-        return paramSQLitaDatabase.insert("articoli", null, localContentValues) > 0L;
-    }
-
-    public static void insertArticoli(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3, double paramDouble1, double paramDouble2, int paramInt)
-    {
-        if (!aggiorna(paramSQLiteDatabase,paramString1,paramString2,paramString3,paramDouble1,paramDouble2,paramInt)){
+    public static void insertArticolo(SQLiteDatabase db, String codice, String descrizione, String reparto, double prezzo, double aliquota, int posizione) {
+        if (!aggiorna(db, codice, descrizione, reparto, prezzo, aliquota, posizione)) {
+            boolean newrecord = inserisci(db, codice, descrizione, reparto, prezzo, aliquota, posizione);
         }
-        for (int i = 1;; i=0)
-        {
-            if (i != 0)
-            {
-                inserisci(paramSQLiteDatabase,paramString1,paramString2,paramString3,paramDouble1,paramDouble2,paramInt);
-            }
-            return;
-        }
+    }
+
+    private static boolean inserisci(SQLiteDatabase db, String codice, String descrizione, String reparto, double prezzo, double aliquota, int posizione) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFAARTICOLO, descrizione);
+        v.put(PREZZODIVENDITA, Double.valueOf(prezzo));
+        v.put(ALIQUOTAIVA, Double.valueOf(aliquota));
+        v.put(CODICEREPARTO, reparto);
+        v.put(POSIZIONE, Integer.valueOf(posizione));
+        return db.insert(TABELLA, null, v) > 0;
+    }
+
+    public static boolean aggiorna(SQLiteDatabase db, String codice, String descrizione, String reparto, double prezzo, double aliquota, int posizione) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFAARTICOLO, descrizione);
+        v.put(PREZZODIVENDITA, Double.valueOf(prezzo));
+        v.put(ALIQUOTAIVA, Double.valueOf(aliquota));
+        v.put(CODICEREPARTO, reparto);
+        v.put(POSIZIONE, Integer.valueOf(posizione));
+        return db.update(TABELLA, v, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getAllArticoli(SQLiteDatabase db) {
+        return db.query(TABELLA, COLONNE, null, null, null, null, POSIZIONE);
+    }
+
+    public static Cursor getAllArticoli(SQLiteDatabase db, String reparto) {
+        return db.query(TABELLA, COLONNE, "reparto='" + reparto + "'", null, null, null, POSIZIONE);
+    }
+
+    public static boolean deleteArticolo(SQLiteDatabase db, String codice) {
+        return db.delete(TABELLA, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getArticolo(SQLiteDatabase db, String codice) {
+        return db.query(true, TABELLA, COLONNE, "codice='" + codice + "'", null, null, null, null, null);
     }
 }

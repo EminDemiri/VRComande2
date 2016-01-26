@@ -1,5 +1,6 @@
 package com.edsoft.vrcomande2.core.dbutility;
 
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,65 +8,56 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by Emin Demiri on 22/12/2015.
  */
-public class Operatori {
 
+public class Operatori {
     public static final String ALFAOPERATORE = "alfaoperatore";
     public static final String CODICE = "codice";
-    public static final String[] COLONNE = { "codice", "alfaoperatore", "login", "password" };
+    public static final String[] COLONNE;
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
     public static final String TABELLA = "operatori";
 
-    public static boolean aggiorna(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3, String paramString4)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfaoperatore", paramString2);
-        localContentValues.put("login", paramString3);
-        localContentValues.put("password", paramString4);
-        return paramSQLiteDatabase.update("operatori", localContentValues, "codice=" + paramString1, null) > 0;
+    static {
+        COLONNE = new String[]{CODICE, ALFAOPERATORE, LOGIN, PASSWORD};
     }
 
-    public static boolean deleteOperatore(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.delete("operatori", "codice=" + paramString, null) > 0;
-    }
-
-    public static Cursor getAllOperatori(SQLiteDatabase paramSQLiteDatabase)
-    {
-        return paramSQLiteDatabase.query("operatori", COLONNE, null, null, null, null, "alfaoperatore");
-    }
-
-    public static Cursor getOperatore(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.query(true, "operatori", COLONNE, "codice='" + paramString + "'", null, null, null, null, null);
-    }
-
-    public static Cursor getOperatore(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2)
-    {
-        return paramSQLiteDatabase.query(true, "operatori", COLONNE, "login='" + paramString1 + "'" + " AND " + "password" + "=" + "'" + paramString2 + "'", null, null, null, null, null);
-    }
-
-    private static boolean inserisci(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3, String paramString4)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfaoperatore", paramString2);
-        localContentValues.put("login", paramString3);
-        localContentValues.put("password", paramString4);
-        return paramSQLiteDatabase.insert("operatori", null, localContentValues) > 0L;
-    }
-
-    public static void insertOperatore(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3, String paramString4)
-    {
-        if (!aggiorna(paramSQLiteDatabase, paramString1, paramString2, paramString3, paramString4)) {}
-        for (int i = 1;; i = 0)
-        {
-            if (i != 0) {
-                inserisci(paramSQLiteDatabase, paramString1, paramString2, paramString3, paramString4);
-            }
-            return;
+    public static void insertOperatore(SQLiteDatabase db, String codice, String alfaoperatore, String login, String password) {
+        if (!aggiorna(db, codice, alfaoperatore, login, password)) {
+            boolean newrecord = inserisci(db, codice, alfaoperatore, login, password);
         }
     }
 
+    private static boolean inserisci(SQLiteDatabase db, String codice, String alfaoperatore, String login, String password) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFAOPERATORE, alfaoperatore);
+        v.put(LOGIN, login);
+        v.put(PASSWORD, password);
+        return db.insert(TABELLA, null, v) > 0;
+    }
+
+    public static boolean aggiorna(SQLiteDatabase db, String codice, String alfaoperatore, String login, String password) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFAOPERATORE, alfaoperatore);
+        v.put(LOGIN, login);
+        v.put(PASSWORD, password);
+        return db.update(TABELLA, v, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getAllOperatori(SQLiteDatabase db) {
+        return db.query(TABELLA, COLONNE, null, null, null, null, ALFAOPERATORE);
+    }
+
+    public static boolean deleteOperatore(SQLiteDatabase db, String codice) {
+        return db.delete(TABELLA, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getOperatore(SQLiteDatabase db, String codice) {
+        return db.query(true, TABELLA, COLONNE, "codice='" + codice + "'", null, null, null, null, null);
+    }
+
+    public static Cursor getOperatore(SQLiteDatabase db, String login, String pwd) {
+        return db.query(true, TABELLA, COLONNE, "login='" + login + "'" + " AND " + PASSWORD + "=" + "'" + pwd + "'", null, null, null, null, null);
+    }
 }

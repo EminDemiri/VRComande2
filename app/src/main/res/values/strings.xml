@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">VRComande2</string>
+    <string name="app_version_grafica">Versione grafica : 0.3</string>
+    <string name="app_version">Versione app : 2.6</string>
     <string name="copy">Copyright © 2015 Roberto Mari SAS</string>
 
     // main
     <string name="main_button_login">Login</string>
     <string name="main_button_conf">Configurazioni</string>
     <string name="main_button_sinc">Sincronizza</string>
-    // main_menu
+    *///Dialog sincronizza
+    <string name="main_titolo_dialog_sinc">Sincronizzazione</string>
+    <string name="main_cont_dialog_sinc">Download dati, attendere..</string>
+    *///menu
     <string name="main_menu_info">Informazioni</string>
     <string name="main_menu_chiudi">Chiudi</string>
     <string name="main_menu_guida">Guida</string>
@@ -26,7 +31,7 @@
     <string name="configurazioni_subTitol">Server</string>
     <string name="configurazioni_ip">IP Server</string>
     <string name="configurazioni_porta">Porta TCP</string>
-    <string name="configurazioni_ceckbox">Autosincronizzazione</string>
+    <string name="configurazioni_ceckbox">Autosincronizzazione al Login</string>
     <string name="configurazioni_registra">Registra Terminale</string>
     <string name="configurazioni_salva">Salva</string>
     <string name="configurazioni_chiudi">Chiudi</string>
@@ -35,6 +40,8 @@
     <string name="configurazioni_msg_salva">I dati sono stati correttamente salvati!</string>
     <string name="configurazioni_msg_registra">Il terminale è stato registrato!</string>
     <string name="configurazioni_msg_registra_2">Il terminale è già presente tra i dispositivi registrati nel server!!</string>
+    <string name="configurazioni_err_msg_ip">Il campo IP non può rimanere vuoto</string>
+    <string name="configurazioni_err_msg_tcp">Il campo TCP non può rimanere vuoto</string>
     ///dialog Aggiorna dati
     <string name="configurazioni_dialog_titolo">Aggiorna</string>
     <string name="configurazioni_dialog_text">Sei sicuro di voler aggiornare i dati?</string>
@@ -45,5 +52,17 @@
     <string name="configurazioni_dialog_chiudi_text">Sei siduro di voler chiudere senza prima salvare?</string>
     <string name="configurazioni_dialog_chiudi_si">SI</string>
     <string name="configurazioni_dialog_chiudi_no">NO</string>
+    ///dialog registra terminale
+    <string name="configurazioni_dialog_registra_titolo">Registra terminale</string>
+    <string name="configurazioni_dialog_registra_messaggio">Sei sicuro di voler registrare questo terminale?</string>
+    <string name="configurazioni_dialog_registra_si">SI</string>
+    <string name="configurazioni_dialog_registra_no">NO</string>
+    ///ProgressDialog registra terminale
+    <string name="configurazioni_progress_dialog_registra_titolo">Registrazione Terminale</string>
+    <string name="configurazioni_progress_dialog_registra_content">Attendi un secondo</string>
+
+
+    //stringhe errori Utility_varie (Codice errori 0.)
+    <string name="utility_varie_stringavuota">Errore 0.1 - La stringa è stata inizializzata dalla classe ma non modificata!!</string>
 
 </resources>

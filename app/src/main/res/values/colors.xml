@@ -3,7 +3,7 @@
     //Colori interfaccia
     <color name="colorPrimary">@color/indingo_500</color>
     <color name="colorPrimaryDark">@color/indingo_700</color>
-    <color name="colorAccent">@color/pink_A200</color>
+    <color name="colorAccent">@color/yellow_500</color>
     <color name="colorBackgroundLogin">@color/indingo_100</color>
     
     //Material Color

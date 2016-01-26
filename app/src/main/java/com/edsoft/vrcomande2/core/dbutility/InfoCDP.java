@@ -2,66 +2,51 @@ package com.edsoft.vrcomande2.core.dbutility;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.sql.SQLDataException;
 
 /**
  * Created by Emin Demiri on 22/12/2015.
  */
 public class InfoCDP {
-
     public static final String ALFACDP = "alfacdp";
     public static final String CODICE = "codice";
-    public static final String[] COLONNE =
-            {
-                    "codice", "alfacdp"
-            };
+    public static final String[] COLONNE;
     public static final String TABELLA = "CentriDiProduzione";
 
-    public static boolean aggiorna(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfacdp", paramString2);
-        return paramSQLiteDatabase.update("CentriDiProduzione", localContentValues, "codice=" + paramString1, null) > 0;
+    static {
+        COLONNE = new String[]{CODICE, ALFACDP};
     }
 
-    public static boolean deleteCDP(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.delete("CentriDiProduzione", "codice='" + paramString + "'", null) > 0;
-    }
-
-    public static Cursor getAllCDP(SQLiteDatabase paramSQLiteDatabase)
-    {
-        return paramSQLiteDatabase.query("CentriDiProduzione", COLONNE, null, null, null, null, null);
-    }
-
-    public static Cursor getCDP(SQLiteDatabase paramSQLiteDatabase, String paramString)
-            throws SQLDataException
-    {
-        return paramSQLiteDatabase.query(true,"CentriDiProduzione", COLONNE, "codice='" + paramString + "'", null, null, null, null, null);
-    }
-
-    private static boolean inserisci(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("alfacdp", paramString2);
-        return paramSQLiteDatabase.insert("CentriDiProduzione", null, localContentValues) > 0L;
-    }
-
-    public static void insertCDP(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2)
-    {
-        if (!aggiorna(paramSQLiteDatabase, paramString1,paramString2)) {}
-        for (int i = 1;; i = 0)
-        {
-            if (i != 0)
-            {
-                inserisci(paramSQLiteDatabase,paramString1,paramString2);
-            }
-            return;
+    public static void insertCDP(SQLiteDatabase db, String codice, String descrizione) {
+        if (!aggiorna(db, codice, descrizione)) {
+            boolean newrecord = inserisci(db, codice, descrizione);
         }
     }
 
+    private static boolean inserisci(SQLiteDatabase db, String codice, String descrizione) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFACDP, descrizione);
+        return db.insert(TABELLA, null, v) > 0;
+    }
+
+    public static boolean aggiorna(SQLiteDatabase db, String codice, String descrizione) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(ALFACDP, descrizione);
+        return db.update(TABELLA, v, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getAllCDP(SQLiteDatabase db) {
+        return db.query(TABELLA, COLONNE, null, null, null, null, null);
+    }
+
+    public static boolean deleteCDP(SQLiteDatabase db, String codice) {
+        return db.delete(TABELLA, new StringBuilder().append("codice='").append(codice).append("'").toString(), null) > 0;
+    }
+
+    public static Cursor getCDP(SQLiteDatabase db, String codice) throws SQLException {
+        return db.query(true, TABELLA, COLONNE, "codice='" + codice + "'", null, null, null, null, null);
+    }
 }

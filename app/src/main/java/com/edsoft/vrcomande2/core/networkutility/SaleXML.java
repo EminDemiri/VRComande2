@@ -1,58 +1,57 @@
 package com.edsoft.vrcomande2.core.networkutility;
 
+import com.edsoft.vrcomande2.BuildConfig;
+
 /**
  * Created by Emin Demiri on 22/12/2015.
  */
+
 public class SaleXML {
+    private String alfasala;
+    private String codsala;
+    private int deltatavoli;
+    private int numerotavoli;
 
-    private String alfasala = "";
-    private String codsala = "";
-    private int deltatavoli = 0;
-    private int numerotavoli = 0;
-
-    public String getAlfaSala()
-    {
-        return this.alfasala;
+    public SaleXML() {
+        this.codsala = BuildConfig.FLAVOR;
+        this.alfasala = BuildConfig.FLAVOR;
+        this.numerotavoli = 0;
+        this.deltatavoli = 0;
     }
 
-    public String getCodSala()
-    {
+    public String getCodSala() {
         return this.codsala;
     }
 
-    public int getDeltaTavoli()
-    {
-        return this.deltatavoli;
+    public void setCodSala(String dati) {
+        this.codsala = dati;
     }
 
-    public int getNumeroTavoli()
-    {
+    public String getAlfaSala() {
+        return this.alfasala;
+    }
+
+    public void setAlfaSala(String dati) {
+        this.alfasala = dati;
+    }
+
+    public int getNumeroTavoli() {
         return this.numerotavoli;
     }
 
-    public void setAlfaSala(String paramString)
-    {
-        this.alfasala = paramString;
+    public void setNumeroTavoli(int dati) {
+        this.numerotavoli = dati;
     }
 
-    public void setCodSala(String paramString)
-    {
-        this.codsala = paramString;
+    public int getDeltaTavoli() {
+        return this.deltatavoli;
     }
 
-    public void setDeltaTavoli(int paramInt)
-    {
-        this.deltatavoli = paramInt;
+    public void setDeltaTavoli(int dati) {
+        this.deltatavoli = dati;
     }
 
-    public void setNumeroTavoli(int paramInt)
-    {
-        this.numerotavoli = paramInt;
-    }
-
-    public String toString()
-    {
+    public String toString() {
         return "RepartiXML [codsala=" + this.codsala + ", alfasala=" + this.alfasala + ", numerotavoli=" + this.numerotavoli + ", deltatavoli=" + this.deltatavoli + "]";
     }
-
 }

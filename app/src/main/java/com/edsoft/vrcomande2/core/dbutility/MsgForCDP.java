@@ -1,70 +1,57 @@
 package com.edsoft.vrcomande2.core.dbutility;
 
+
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.sql.SQLDataException;
 
 /**
  * Created by Emin Demiri on 22/12/2015.
  */
-public class MsgForCDP {
 
+public class MsgForCDP {
     public static final String CDP = "cdp";
     public static final String CODICE = "codice";
-    public static final String[] COLONNE =
-            {
-                    "codice","testo","cdp"
-            };
+    public static final String[] COLONNE;
     public static final String TABELLA = "MsgForCDP";
     public static final String TESTO = "testo";
 
-    public static boolean aggiorna(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("testo", paramString2);
-        localContentValues.put("cdp",paramString3);
-        return paramSQLiteDatabase.update("MsgForCDP", localContentValues, "codice=" + paramString1, null) > 0;
+    static {
+        COLONNE = new String[]{CODICE, TESTO, CDP};
     }
 
-    public static boolean deleteMsgForCDP(SQLiteDatabase paramSQLiteDatabase, String paramString)
-    {
-        return paramSQLiteDatabase.delete("MsgForCDP", "codice='" + paramString + "'", null) > 0;
-    }
-
-    public static Cursor getAllMsgForCDP(SQLiteDatabase paramSQLiteDatebase)
-    {
-        return paramSQLiteDatebase.query("MsgForCDP", COLONNE, null, null, null, null, null);
-    }
-
-    public static Cursor getMsgForCDP(SQLiteDatabase paramSQLiteDatabase, String paramString)
-            throws SQLDataException
-    {
-        return paramSQLiteDatabase.query(true, "MsgForCDP", COLONNE, "codice='" + paramString + "'", null, null, null, null, null);
-    }
-
-    private static boolean inserisci(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3)
-    {
-        ContentValues localContentValues = new ContentValues();
-        localContentValues.put("codice", paramString1);
-        localContentValues.put("testo", paramString2);
-        localContentValues.put("cdp", paramString3);
-        return paramSQLiteDatabase.insert("MsgForCDP", null, localContentValues) > 0L;
-    }
-
-    public static void insertMsgForCDP(SQLiteDatabase paramSQLiteDatabase, String paramString1, String paramString2, String paramString3)
-    {
-        if (!aggiorna(paramSQLiteDatabase,paramString1,paramString2,paramString3)) {}
-        for (int i = 1;; i = 0)
-        {
-            if (i != 0)
-            {
-                inserisci(paramSQLiteDatabase,paramString1,paramString2,paramString3);
-            }
-            return;
+    public static void insertMsgForCDP(SQLiteDatabase db, String codice, String Testo, String Cdp) {
+        if (!aggiorna(db, codice, Testo, Cdp)) {
+            boolean newrecord = inserisci(db, codice, Testo, Cdp);
         }
     }
 
+    private static boolean inserisci(SQLiteDatabase db, String codice, String Testo, String Cdp) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(TESTO, Testo);
+        v.put(CDP, Cdp);
+        return db.insert(TABELLA, null, v) > 0;
+    }
+
+    public static boolean aggiorna(SQLiteDatabase db, String codice, String Testo, String Cdp) {
+        ContentValues v = new ContentValues();
+        v.put(CODICE, codice);
+        v.put(TESTO, Testo);
+        v.put(CDP, Cdp);
+        return db.update(TABELLA, v, new StringBuilder().append("codice=").append(codice).toString(), null) > 0;
+    }
+
+    public static Cursor getAllMsgForCDP(SQLiteDatabase db) {
+        return db.query(TABELLA, COLONNE, null, null, null, null, null);
+    }
+
+    public static boolean deleteMsgForCDP(SQLiteDatabase db, String codice) {
+        return db.delete(TABELLA, new StringBuilder().append("codice='").append(codice).append("'").toString(), null) > 0;
+    }
+
+    public static Cursor getMsgForCDP(SQLiteDatabase db, String codice) throws SQLException {
+        return db.query(true, TABELLA, COLONNE, "codice='" + codice + "'", null, null, null, null, null);
+    }
 }

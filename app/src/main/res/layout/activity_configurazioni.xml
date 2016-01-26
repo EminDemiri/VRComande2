@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-    android:id="@+id/coordinatorlayoutConfigurazioni"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorlayoutConfigurazioni"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -59,20 +59,29 @@
                 android:id="@+id/input_text_tcp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
+                android:singleLine="true"
                 android:hint="@string/configurazioni_porta" />
         </android.support.design.widget.TextInputLayout>
 
-        <CheckBox
+        <com.rey.material.widget.CheckBox
+            style="@style/Material.Drawable.CheckBox"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/configurazioni_ceckbox"
-            android:id="@+id/checkBox"
+            android:id="@+id/autoApDateDB"
             android:layout_marginTop="10dp"
-            android:shadowColor="@color/indingo_900"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="25dp"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            app:cbd_tickColor="@color/indingo_900"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/idAndroid"
+            android:layout_gravity="center_horizontal" />
 
         <Button
             style="@style/Button"
@@ -80,10 +89,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/configurazioni_registra"
-            android:background="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:onClick="click_conf_registra" />
+            android:textStyle="bold" />
+
+        <com.rey.material.widget.Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BUTTON"
+            app:rd_enable="true"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -100,9 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="1dp"
             android:text="@string/configurazioni_salva"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:onClick="click_conf_salva" />
+            android:textStyle="bold"/>
 
         <Button
             style="@style/Button"
@@ -112,9 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="1dp"
             android:text="@string/configurazioni_chiudi"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:onClick="click_conf_chiudi" />
+            android:textStyle="bold"/>
 
     </LinearLayout>
     </LinearLayout>

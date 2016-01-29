@@ -81,6 +81,7 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                         SalvaConfigurazione();
                         return;
                     case R.id.btn_conf_chiudi:
+                        finish();
                         return;
                     case R.id.autoApDateDB:
                         DatiModificati(true);
@@ -304,7 +305,6 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                     ret.Dati = nsocket;
                     Log.e("CollegaAlServer", "Il socket si è connesso");
                     return ret;
-                    //break;
                 }
                 ret.result = -1;
                 ret.errMesg = "Errore collegamento con il server";
@@ -331,7 +331,7 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                 Log.e("ERRORE", "Nesun ID terminale rilevato SendCmd");
             } else {
                 genericresult r = new genericresult(0,null,BuildConfig.FLAVOR);
-                Socket nsocket = null;
+                Socket nsocket2 = null;
                 genericresult novarum_risto_vrordina_genericresult = new genericresult(0, null, BuildConfig.FLAVOR);
                 int index = 0;
                 while (index < 3) {
@@ -340,13 +340,13 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                     Log.e("r result", ""+r.result);
                     if (r.result == 0) {
                         int length;
-                        nsocket = (Socket)r.Dati;
+                        nsocket2 = (Socket)r.Dati;
                         SocketAddress sockaddr = new InetSocketAddress(Sever, PortaTCP);
                         Log.e("SendCmd", "lanciata la connessione con il socket");
-                        nsocket.connect(sockaddr, 1000);
+                        nsocket2.connect(sockaddr, 1000);
                         //r.Dati = nsocket;
                         Log.e("SendCmd","Avviata la connessione dentro all'if");
-                        nsocket.setSoTimeout(5000);
+                        nsocket2.setSoTimeout(5000);
                         InputStream nis = nsocket.getInputStream();
                         OutputStream nos = nsocket.getOutputStream();
                         ArrayList<Byte> dati = new ArrayList();
@@ -354,17 +354,6 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                         byte[] len = TLVParser.intToByteArray(datiDaInviare.length());
                         TLVParser.reverse(len);
                         int i = 0;
-                        /**
-                        while (true) {
-                            length = len.length;
-                            if (i >= 0) {
-                                break;
-                            }
-                            dati.add(Byte.valueOf(len[i]));
-                            i++;
-                        }
-                         */
-
                         while (i<len.length)
                         {
                             dati.add(Byte.valueOf(len[i]));
@@ -372,29 +361,11 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                         }
                         byte[] contenuto = datiDaInviare.getBytes("UTF-8");
                         i = 0;
-
-                        /**
-                        while (true) {
-                            length = contenuto.length;
-                            if (i >= 0) {
-                                break;
-                            }
-                            dati.add(Byte.valueOf(contenuto[i]));
-                            i++;
-                        }
-                         */
-
                         while (i<contenuto.length)
                         {
                             dati.add(Byte.valueOf(len[i]));
                         }
                         byte[] datatosend = new byte[dati.size()];
-                        /**
-                        for (i = 0; i < dati.size(); i++) {
-                            datatosend[i] = ((Byte) dati.get(i)).byteValue();
-                        }
-                         */
-
                         i=0;
                         while (i<dati.size())
                         {
@@ -416,8 +387,8 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                                 Ret.errMesg = Ret.Dati;
                             }
                         }
-                        if (nsocket != null) {
-                            nsocket.close();
+                        if (nsocket2 != null) {
+                            nsocket2.close();
                         }
                         if (r.result != 0) {
                             Ret.result = -1;
@@ -428,8 +399,8 @@ public class ConfigurazioniActivity extends AppCompatActivity {
                         index++;
                     }
                 }
-                if (nsocket != null) {
-                    nsocket.close();
+                if (nsocket2 != null) {
+                    nsocket2.close();
                 }
                 if (r.result != 0) {
                     Ret.result = -1;

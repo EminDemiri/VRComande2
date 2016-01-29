@@ -85,19 +85,14 @@
 
         <Button
             style="@style/Button"
+            android:background="@drawable/round_button"
             android:id="@+id/btn_conf_registra"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/configurazioni_registra"
             android:textStyle="bold" />
 
-        <com.rey.material.widget.Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BUTTON"
-            app:rd_enable="true"/>
-
-    <LinearLayout
+        <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -106,6 +101,7 @@
 
         <Button
             style="@style/Button"
+            android:background="@drawable/round_button"
             android:id="@+id/btn_conf_salva"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -116,6 +112,7 @@
 
         <Button
             style="@style/Button"
+            android:background="@drawable/round_button"
             android:id="@+id/btn_conf_chiudi"
             android:layout_weight="1"
             android:layout_width="match_parent"

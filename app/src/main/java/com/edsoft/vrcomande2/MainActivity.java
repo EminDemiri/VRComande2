@@ -3,32 +3,22 @@ package com.edsoft.vrcomande2;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.edsoft.vrcomande2.core.dbutility.ConnessioneAlServer;
 import com.edsoft.vrcomande2.core.dbutility.DBHelper;
-import com.edsoft.vrcomande2.core.dbutility.fresul;
-import com.edsoft.vrcomande2.core.networkutility.ParserDbPalmare;
-import com.edsoft.vrcomande2.core.networkutility.networkresult;
+import com.rey.material.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     DBHelper databaseHelper;
     ProgressDialog pb;
-
-
-
 
     CoordinatorLayout coordinatorLayout;
     String stringa = "";
@@ -147,73 +134,5 @@ public class MainActivity extends AppCompatActivity {
     {
         stringa="Il codice per la sincronizzazione deve essere ancora scritto";
         crea_snackbar();
-    }
-
-
-/**
-    private void StartDbSincTask() {
-        try
-        {
-            this.pb = ProgressDialog.show(this,"sincronizza db","Start...", true,false);
-            new SincTask().execute(new String[]["Process Started!"]);
-        } catch (Exception ex) {
-            Log.e("StartDbSincTask: ",ex.getMessage());
-        }
-    }
-
-    private class SincTask extends AsyncTask<String, String, String> {
-        private SincTask(){}
-
-        protected String doInBackground(String... params) {
-            String Ret = BuildConfig.FLAVOR;
-            String errMsg = BuildConfig.FLAVOR;
-            try {
-                publishProgress(new String[]{"\n" + params[0]});
-                SQLiteDatabase db = MainActivity.this.databaseHelper.getWritableDatabase();
-                String ipServer = BuildConfig.FLAVOR;
-                int PortaServer = 0;
-                Cursor c = ConnessioneAlServer.getAllServer(db);
-                while (c.moveToNext()) {
-                    ipServer = c.getString(0);
-                    PortaServer = c.getInt(1);
-                }
-                if (ipServer == BuildConfig.FLAVOR || PortaServer == 0) {
-                    ipServer = "192.168.1.2";
-                    PortaServer = 4444;
-                }
-                if (ipServer == BuildConfig.FLAVOR || PortaServer == 0) {
-                    return "Errore nella configurazione del server";
-                }
-                publishProgress(new String[]{"Download dati, attendere..."});
-                networkresult r = MainActivity.this.ScaricaDB(ipServer, PortaServer);
-                if (r.result != 0) {
-                    return r.errMesg;
-                }
-                publishProgress(new String[]{"elaborazione dei dati, attendere..."});
-                ParserDbPalmare parser = new ParserDbPalmare();
-                r = parser.parseXml(r.Dati);
-                if (r.result != 0) {
-                    return r.errMesg;
-                }
-                publishProgress(new String[]{"inserimento dati nel db, attendere..."});
-                fresul sbret = new fresul(0, BuildConfig.FLAVOR);
-                if (parser.getParsedOperatori().size() > 0) {
-                    dbret = MainActivity.this.databaseHelper.BulkImportdbOperatori(db, parser.getParsedOperatori());
-                }
-
-            }
-        }
-    }
-*/
-
-
-    private void showIndeterminateProgressDialog(boolean horizontal, String paramTitolo, String paramContent)   //Crea un progress dialog con titolo e content
-    {
-        new MaterialDialog.Builder(this)
-                .title(paramTitolo)
-                .content(paramContent)
-                .progress(true, 0)
-                .progressIndeterminateStyle(horizontal)
-                .show();
     }
 }
